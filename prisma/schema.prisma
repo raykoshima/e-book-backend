@@ -1,0 +1,88 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+   previewFeatures = ["fullTextSearch", "fullTextIndex"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum PaidStatus {
+  PAID
+  UNPAID
+}
+
+model Customer {
+  id             Int         @id @default(autoincrement())
+  email          String      @unique
+  password       String
+  displayname    String      @map("display_name")
+  phone          Int         @unique
+  createdDate    DateTime    @default(now()) @map("created_date")
+  profilepicture String      @map("profile_picture")
+  Cart           Cart[]
+  Payment        Payment[]
+  Inventory      Inventory[]
+}
+
+model Product {
+  id          Int         @id @default(autoincrement())
+  Name        String
+  Description String
+  PublishDate DateTime
+  Author      String
+  Price       Int
+  Tag         String
+  Image       String
+  download    Download    @relation(fields: [DownloadID], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  DownloadID  Int         @unique
+  Cart        Cart[]
+  Inventory   Inventory[]
+
+  @@fulltext([Name,Description])
+}
+
+model Download {
+  id        Int         @id @default(autoincrement())
+  url       String
+  Product   Product?
+  Inventory Inventory[]
+}
+
+model Cart {
+  id          Int       @id @default(autoincrement())
+  IsPay       Boolean   @default(false)
+  customer    Customer  @relation(fields: [Customer_ID], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  Customer_ID Int
+  product     Product   @relation(fields: [Product_ID], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  Product_ID  Int
+  Payment     Payment[]
+}
+
+model Payment {
+  id          Int        @id @default(autoincrement())
+  Method      String
+  Status      PaidStatus @default(UNPAID)
+  cart        Cart       @relation(fields: [Cart_ID], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  Cart_ID     Int
+  customer    Customer   @relation(fields: [Customer_ID], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  Customer_ID Int
+  Inventory   Inventory?
+}
+
+model Inventory {
+  id           Int      @id @default(autoincrement())
+  purchaseDate DateTime @default(now())
+  customer     Customer @relation(fields: [Customer_ID], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  Customer_ID  Int
+  product      Product  @relation(fields: [Product_ID], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  Product_ID   Int
+  payment      Payment  @relation(fields: [Payment_ID], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  Payment_ID   Int      @unique
+  download     Download @relation(fields: [Download_ID], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  Download_ID  Int
+}

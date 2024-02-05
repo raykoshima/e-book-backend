@@ -6,6 +6,7 @@ const cors = require("cors");
 const errorHandler = require("./middlewares/error");
 const notFoundHandler = require("./middlewares/notFound");
 
+const authRoute = require("./routes/auth-route")
 const productRoute = require("./routes/product-route")
 
 app.use(cors())
@@ -14,6 +15,7 @@ app.use(express.json());
 // app.use("/product",(req,res,next)=>{
 //   res.json({message:"use product"})
 // })
+app.use("/auth",authRoute)
 app.use("/product",productRoute)
 
 

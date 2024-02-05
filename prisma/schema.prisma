@@ -19,12 +19,12 @@ enum PaidStatus {
 
 model Customer {
   id             Int         @id @default(autoincrement())
-  email          String      @unique
-  password       String
-  displayname    String      @map("display_name")
-  phone          Int         @unique
-  createdDate    DateTime    @default(now()) @map("created_date")
-  profilepicture String      @map("profile_picture")
+  Email          String      @unique
+  Password       String      @db.VarChar(72)
+  Displayname    String      @map("display_name")
+  Phone          String?
+  CreatedDate    DateTime    @default(now()) @map("created_date")
+  Profilepicture String      @default("https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Unknown_person.jpg/434px-Unknown_person.jpg") @map("profile_picture")
   Cart           Cart[]
   Payment        Payment[]
   Inventory      Inventory[]
@@ -76,7 +76,7 @@ model Payment {
 
 model Inventory {
   id           Int      @id @default(autoincrement())
-  purchaseDate DateTime @default(now())
+  PurchaseDate DateTime @default(now())
   customer     Customer @relation(fields: [Customer_ID], references: [id], onDelete: Cascade, onUpdate: Cascade)
   Customer_ID  Int
   product      Product  @relation(fields: [Product_ID], references: [id], onDelete: Cascade, onUpdate: Cascade)
@@ -93,8 +93,8 @@ enum PERMISSION {
 }
 
 model Employees {
-  id Int @id @default(autoincrement())
-  Username String @unique
-  Password String
+  id         Int        @id @default(autoincrement())
+  Username   String     @unique
+  Password   String
   Permission PERMISSION @default(EDITOR)
 }

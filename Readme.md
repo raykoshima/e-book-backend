@@ -2,7 +2,7 @@
 
 PORT=<br>
 JWT_SECRET_KEY=<br>
-DATABASE_URL="mysql://<username>:<password>@<IP>:3306/todolist_test"<br>
+DATABASE_URL="mysql://<username>:<password>@<IP>:3306/ebook_backend"<br>
 
 ----------------------
 
@@ -15,12 +15,15 @@ GET                    /product        true         none           none         
 GET                    /product/page/               :page          none              none
 GET                    /id/                         :id            none              none
 GET                    /search                      none           ?query            none
-POST                   /auth/register               none           none              {username, password, confirmPassword, email}
-POST                   /auth/login                  none           none              {username, password}
+POST                   /auth/register               none           none              {email, password, confirmPassword, displayname, phone?, profilepicture?}
+POST                   /auth/login                  none           none              {email, password}
 GET                    /auth/me        true         none           none              none
 GET                    /todos          true         none           none              none
 ```
-
+**
+when use prisma in backend the first Char in datarow is uppercase
+email -> Email
+password -> Password
 
 ----------------------
 

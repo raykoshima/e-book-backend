@@ -15,6 +15,8 @@ exports.getallProduct = async (req,res,next) => {
     }
 }
 
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------
+
 exports.getProductByPage = async (req,res,next) => {
     try {
         const { page } = req.params
@@ -37,6 +39,8 @@ exports.getProductByPage = async (req,res,next) => {
     }
 }
 
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------
+
 exports.getProductByID = async (req,res,next) => {
     try{
         const { id } = req.params
@@ -51,6 +55,8 @@ exports.getProductByID = async (req,res,next) => {
         next(err)
     }
 }
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 exports.searchProduct = async (req,res,next) => {
     // res.json({ query })

@@ -27,7 +27,7 @@ exports.getProductByPage = async (req,res,next) => {
          productPage = await prisma.$queryRaw`SELECT * FROM product WHERE id BETWEEN ${item10} AND ${item}`
         }
         if (productPage.length === 0) {
-            return res.status(404).json({ message: "There is no more data" });
+            return res.status(404).json({ message: "there no data to display" });
         }
         const ProductData = productPage
         res.json({ ProductData })
@@ -42,6 +42,9 @@ exports.getProductByID = async (req,res,next) => {
         const { id } = req.params
         
         const productData = await prisma.$queryRaw`SELECT * FROM product WHERE id = ${id}`
+        if (productData.length === 0) {
+            return res.status(404).json({ message: "item that your request is not exited" });
+        }
         res.json({ productData })
     }
     catch(err){
@@ -53,17 +56,24 @@ exports.searchProduct = async (req,res,next) => {
     // res.json({ query })
     try {
         const { query } = req.query
+        const querytirm = query.trim()
+        if(querytirm.length === 0){
+            return res.status(405).json({message:"please fill input"})
+        }
 
         const productData = await prisma.product.findMany({
             where:{
                 Name:{
-                    search:`+${query}`
+                    search:`+${querytirm}`
                 },
                 Description:{
-                    search:`+${query}`
+                    search:`+${querytirm}`
                 }
             }
         })
+        if (productData.length === 0) {
+            return res.status(404).json({ message: "No match item" });
+        }
         
     res.json({ productData })
         

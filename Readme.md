@@ -11,7 +11,7 @@ DATABASE_URL="mysql://<username>:<password>@<IP>:3306/todolist_test"<br>
 ```
 method                 path            authen       params         query             body
 
-GET                    /product                     none           none              none
+GET                    /product        true         none           none              none
 GET                    /product/page/               :page          none              none
 GET                    /id/                         :id            none              none
 GET                    /search                      none           ?query            none
@@ -20,6 +20,7 @@ POST                   /auth/login                  none           none         
 GET                    /auth/me        true         none           none              none
 GET                    /todos          true         none           none              none
 ```
+
 
 ----------------------
 

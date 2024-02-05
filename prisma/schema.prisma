@@ -2,8 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
-   previewFeatures = ["fullTextSearch", "fullTextIndex"]
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
 datasource db {
@@ -12,8 +12,9 @@ datasource db {
 }
 
 enum PaidStatus {
+  PENDING
   PAID
-  UNPAID
+  CANCEL
 }
 
 model Customer {
@@ -43,7 +44,7 @@ model Product {
   Cart        Cart[]
   Inventory   Inventory[]
 
-  @@fulltext([Name,Description])
+  @@fulltext([Name, Description])
 }
 
 model Download {
@@ -54,24 +55,23 @@ model Download {
 }
 
 model Cart {
-  id          Int       @id @default(autoincrement())
-  IsPay       Boolean   @default(false)
-  customer    Customer  @relation(fields: [Customer_ID], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  id          Int      @id @default(autoincrement())
+  payment     Payment  @relation(fields: [Payment_ID], references: [id])
+  Payment_ID  Int      @unique
+  customer    Customer @relation(fields: [Customer_ID], references: [id], onDelete: Cascade, onUpdate: Cascade)
   Customer_ID Int
-  product     Product   @relation(fields: [Product_ID], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  product     Product  @relation(fields: [Product_ID], references: [id], onDelete: Cascade, onUpdate: Cascade)
   Product_ID  Int
-  Payment     Payment[]
 }
 
 model Payment {
   id          Int        @id @default(autoincrement())
   Method      String
-  Status      PaidStatus @default(UNPAID)
-  cart        Cart       @relation(fields: [Cart_ID], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  Cart_ID     Int
+  Status      PaidStatus @default(PENDING)
   customer    Customer   @relation(fields: [Customer_ID], references: [id], onDelete: Cascade, onUpdate: Cascade)
   Customer_ID Int
   Inventory   Inventory?
+  Cart        Cart?
 }
 
 model Inventory {
@@ -85,4 +85,16 @@ model Inventory {
   Payment_ID   Int      @unique
   download     Download @relation(fields: [Download_ID], references: [id], onDelete: Cascade, onUpdate: Cascade)
   Download_ID  Int
+}
+
+enum PERMISSION {
+  ADMIN
+  EDITOR
+}
+
+model Employees {
+  id Int @id @default(autoincrement())
+  Username String @unique
+  Password String
+  Permission PERMISSION @default(EDITOR)
 }

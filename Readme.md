@@ -19,6 +19,7 @@ POST                   /auth/register               none           none         
 POST                   /auth/login                  none           none              {email, password}
 GET                    /auth/me        true         none           none              none
 GET                    /todos          true         none           none              none
+GET                    /pay/:id        true         :id            none              none
 ```
 **
 when use prisma in backend the first Char in datarow is uppercase

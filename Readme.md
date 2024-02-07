@@ -15,11 +15,15 @@ GET                    /product        true         none           none         
 GET                    /product/page/               :page          none              none
 GET                    /id/                         :id            none              none
 GET                    /search                      none           ?query            none
+
 POST                   /auth/register               none           none              {email, password, confirmPassword, displayname, phone?, profilepicture?}
 POST                   /auth/login                  none           none              {email, password}
 GET                    /auth/me        true         none           none              none
+
 GET                    /todos          true         none           none              none
-GET                    /pay/:id        true         :id            none              none
+
+POST                   /topup          true         none           none              {amount}
+GET                    /topup/status   true         :id            none              none
 ```
 **
 when use prisma in backend the first Char in datarow is uppercase

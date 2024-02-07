@@ -6,7 +6,7 @@ exports.register = async (req,res,next) => {
     try {
     const {email, password, confirmPassword, displayname, phone, profilepicture} = req.body
     //validation
-    if( !(email && password && confirmPassword && displayname && phone) ) {
+    if( !(email && password && confirmPassword && displayname) ) {
         return next( new Error(`please fill input`))
     }
     if( (password !== confirmPassword )){

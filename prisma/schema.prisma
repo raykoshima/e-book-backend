@@ -11,80 +11,80 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum PaidStatus {
+enum TopupStatus {
   PENDING
   PAID
   CANCEL
 }
 
 model Customer {
-  id             Int         @id @default(autoincrement())
-  Email          String      @unique
-  Password       String      @db.VarChar(72)
-  Displayname    String      @map("display_name")
+  id             Int       @id @default(autoincrement())
+  Email          String    @unique
+  Password       String    @db.VarChar(72)
+  Displayname    String    @map("display_name")
   Phone          String?
-  CreatedDate    DateTime    @default(now()) @map("created_date")
-  Profilepicture String      @default("https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Unknown_person.jpg/434px-Unknown_person.jpg") @map("profile_picture")
+  CreatedDate    DateTime  @default(now()) @map("created_date")
+  ProfilePicture String    @default("https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Unknown_person.jpg/434px-Unknown_person.jpg") @map("Profile_picture")
+  Wallet         Int       @default(0)
   Cart           Cart[]
-  Payment        Payment[]
-  Inventory      Inventory[]
+  Topup          Topup[]
+  History        History[]
+  Order          Order[]
+}
+
+model Topup {
+  id         Int         @id @default(autoincrement())
+  Amount     Int         @default(0)
+  Status     TopupStatus @default(PENDING)
+  customer   Customer    @relation(fields: [CustomerID], references: [id], onUpdate: Cascade)
+  CustomerID Int
 }
 
 model Product {
-  id          Int         @id @default(autoincrement())
+  id          Int       @id @default(autoincrement())
   Name        String
-  Description String
+  Description String?
   PublishDate DateTime
   Author      String
-  Price       Int
-  Tag         String
+  Price       Int       @default(1)
+  Tag         String?
   Image       String
-  download    Download    @relation(fields: [DownloadID], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  DownloadID  Int         @unique
+  DownloadUrl String    @map("Download_URL")
   Cart        Cart[]
-  Inventory   Inventory[]
+  History     History[]
+  Order       Order[]
 
-  @@fulltext([Name, Description])
+  @@fulltext([Name, Description, Author])
 }
 
-model Download {
-  id        Int         @id @default(autoincrement())
-  url       String
-  Product   Product?
-  Inventory Inventory[]
+model History {
+  id         Int      @id @default(autoincrement())
+  PaidAmount Int
+  customer   Customer @relation(fields: [CustomerID], references: [id], onUpdate: Cascade)
+  CustomerID Int
+  product    Product  @relation(fields: [ProductID], references: [id])
+  ProductID  Int
 }
 
 model Cart {
-  id          Int      @id @default(autoincrement())
-  payment     Payment  @relation(fields: [Payment_ID], references: [id])
-  Payment_ID  Int      @unique
-  customer    Customer @relation(fields: [Customer_ID], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  Customer_ID Int
-  product     Product  @relation(fields: [Product_ID], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  Product_ID  Int
+  id         Int      @id @default(autoincrement())
+  customer   Customer @relation(fields: [CustomerID], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  CustomerID Int
+  product    Product  @relation(fields: [ProductID], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  ProductID  Int
+  Order      Order?
 }
 
-model Payment {
-  id          Int        @id @default(autoincrement())
-  Method      String
-  Status      PaidStatus @default(PENDING)
-  customer    Customer   @relation(fields: [Customer_ID], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  Customer_ID Int
-  Inventory   Inventory?
-  Cart        Cart?
-}
-
-model Inventory {
-  id           Int      @id @default(autoincrement())
-  PurchaseDate DateTime @default(now())
-  customer     Customer @relation(fields: [Customer_ID], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  Customer_ID  Int
-  product      Product  @relation(fields: [Product_ID], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  Product_ID   Int
-  payment      Payment  @relation(fields: [Payment_ID], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  Payment_ID   Int      @unique
-  download     Download @relation(fields: [Download_ID], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  Download_ID  Int
+model Order {
+  id         Int      @id @default(autoincrement())
+  CreateAt   DateTime @default(now()) @map("Create_at")
+  UpdateAt   DateTime @updatedAt()
+  cart       Cart     @relation(fields: [CartID], references: [id])
+  CartID     Int      @unique
+  product    Product  @relation(fields: [ProductID], references: [id])
+  ProductID  Int
+  customer   Customer @relation(fields: [CustomerID], references: [id], onUpdate: Cascade)
+  CustomerID Int
 }
 
 enum PERMISSION {

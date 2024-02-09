@@ -3,27 +3,31 @@
 PORT=<br>
 JWT_SECRET_KEY=<br>
 DATABASE_URL="mysql://<username>:<password>@<IP>:3306/ebook_backend"<br>
+ADMIN_NUMBER=<for admin role please not input 0>
 
 ----------------------
 
 ** api_service **
 
 ```
-method                 path            authen       params         query             body
+method                 path                         authen       params         query             body
 
-GET                    /product        true         none           none              none
-GET                    /product/page/               :page          none              none
-GET                    /id/                         :id            none              none
-GET                    /search                      none           ?query            none
+GET                    /product                     true         none           none              none
+GET                    /product/page/                            :page          none              none
+GET                    /id/                                      :id            none              none
+GET                    /search                                   none           ?query            none
 
-POST                   /auth/register               none           none              {email, password, confirmPassword, displayname, phone?, profilepicture?}
-POST                   /auth/login                  none           none              {email, password}
-GET                    /auth/me        true         none           none              none
+POST                   /auth/register                            none           none              {email, password, confirmPassword, displayname, phone?, profilepicture?}
+POST                   /auth/login                               none           none              {email, password}
+GET                    /auth/me                     true         none           none              none
+PATCH                  /auth/update                 true         none           none              {oldPassword, newPassword ,confirmNewPassword, displayname, phone, profilepicture}
 
-GET                    /todos          true         none           none              none
+GET                    /todos                       true         none           none              none
 
-POST                   /topup          true         none           none              {amount}
-GET                    /topup/status   true         :id            none              none
+POST                   /topup                       true         none           none              {amount}
+GET                    /topup/status                true         :id            none              none
+
+PATCH                  /backend/topup/update/:id    admin        :id            none              {status : "PAID","CANCEL"}
 ```
 **
 when use prisma in backend the first Char in datarow is uppercase

@@ -17,7 +17,7 @@ enum TopupStatus {
   CANCEL
 }
 
-model Customer {
+model User {
   id             Int       @id @default(autoincrement())
   Email          String    @unique
   Password       String    @db.VarChar(72)
@@ -26,6 +26,7 @@ model Customer {
   CreatedDate    DateTime  @default(now()) @map("created_date")
   ProfilePicture String    @default("https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Unknown_person.jpg/434px-Unknown_person.jpg") @map("Profile_picture")
   Wallet         Int       @default(0)
+  Backend        Int       @default(0)
   Cart           Cart[]
   Topup          Topup[]
   History        History[]
@@ -36,8 +37,8 @@ model Topup {
   id         Int         @id @default(autoincrement())
   Amount     Int         @default(0)
   Status     TopupStatus @default(PENDING)
-  customer   Customer    @relation(fields: [CustomerID], references: [id], onUpdate: Cascade)
-  CustomerID Int
+  user   User    @relation(fields: [UserID], references: [id], onUpdate: Cascade)
+  UserID Int
 }
 
 model Product {
@@ -60,16 +61,16 @@ model Product {
 model History {
   id         Int      @id @default(autoincrement())
   PaidAmount Int
-  customer   Customer @relation(fields: [CustomerID], references: [id], onUpdate: Cascade)
-  CustomerID Int
+  user   User @relation(fields: [UserID], references: [id], onUpdate: Cascade)
+  UserID Int
   product    Product  @relation(fields: [ProductID], references: [id])
   ProductID  Int
 }
 
 model Cart {
   id         Int      @id @default(autoincrement())
-  customer   Customer @relation(fields: [CustomerID], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  CustomerID Int
+  user   User @relation(fields: [UserID], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  UserID Int
   product    Product  @relation(fields: [ProductID], references: [id], onDelete: Cascade, onUpdate: Cascade)
   ProductID  Int
   Order      Order?
@@ -83,18 +84,18 @@ model Order {
   CartID     Int      @unique
   product    Product  @relation(fields: [ProductID], references: [id])
   ProductID  Int
-  customer   Customer @relation(fields: [CustomerID], references: [id], onUpdate: Cascade)
-  CustomerID Int
+  user   User @relation(fields: [UserID], references: [id], onUpdate: Cascade)
+  UserID Int
 }
 
-enum PERMISSION {
-  ADMIN
-  EDITOR
-}
+// enum PERMISSION {
+//   ADMIN
+//   EDITOR
+// }
 
-model Employees {
-  id         Int        @id @default(autoincrement())
-  Username   String     @unique
-  Password   String
-  Permission PERMISSION @default(EDITOR)
-}
+// model Employees {
+//   id         Int        @id @default(autoincrement())
+//   Username   String     @unique
+//   Password   String
+//   Permission PERMISSION @default(EDITOR)
+// }

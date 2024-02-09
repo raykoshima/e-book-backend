@@ -13,7 +13,7 @@ exports.register = async (req,res,next) => {
         throw new Error(`Confirm password not match`)
     }
 
-    const emailCheck = await prisma.customer.findFirst({
+    const emailCheck = await prisma.user.findFirst({
         where :{
             Email:email
         }
@@ -35,7 +35,7 @@ exports.register = async (req,res,next) => {
         Profilepicture:profilepicture, 
     }
     // console.log(data)
-    await prisma.customer.create({ // insert to database
+    await prisma.user.create({ // insert to database
         data : data
     })
     
@@ -56,16 +56,16 @@ exports.login = async (req,res,next) => {
         if( !(email.trim() && password.trim())){
             throw new Error("Please Fill Input")
         }
-        const customer = await prisma.customer.findFirstOrThrow({
+        const user = await prisma.user.findFirstOrThrow({
             where:{
                 Email:email
             }
         })
-        const pwOk = await bcrypt.compare(password,customer.Password)
+        const pwOk = await bcrypt.compare(password,user.Password)
         if(!pwOk) {
             throw new Error('invalid password')
         }
-        const payload = { id: customer.id }
+        const payload = { id: user.id }
         const token = jwt.sign(payload, process.env.JWT_SECRET_KEY,{
             expiresIn: '1d'
         })
@@ -80,5 +80,5 @@ exports.login = async (req,res,next) => {
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 exports.getMe = (req,res,next) => {
-    res.json(req.customer)
+    res.json(req.user)
 }

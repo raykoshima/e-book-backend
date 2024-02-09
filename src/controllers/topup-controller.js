@@ -9,7 +9,7 @@ exports.createTopupID = async (req,res,next) => {
         }
         const topupData = {
             "Amount" : amount,
-            "CustomerID" : req.customer.id
+            "UserID" : req.user.id
         }
         const rs = await prisma.topup.create({
             data : topupData
@@ -32,7 +32,7 @@ exports.getTopupStatus = async (req,res,next) => {
         const rs = await prisma.topup.findFirstOrThrow({
             where: {
                 id : Number(id),
-                CustomerID : Number(req.customer.id)
+                UserID : Number(req.user.id)
             }
         })
         res.json({id : rs.id , Status : rs.Status})

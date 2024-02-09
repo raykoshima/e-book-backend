@@ -15,15 +15,15 @@ module.exports = async (req, res, next) => {
         // console.log(`token is ${token[1]}`)
         // console.log(payload)
 
-        const customer = await prisma.customer.findFirstOrThrow({
+        const user = await prisma.user.findFirstOrThrow({
             where: {
                 id: payload.id
             }
         })
         // console.log(user)
-        // ส่ง request customer กลับไป
-        delete customer.Password
-        req.customer = customer
+        // ส่ง request user กลับไป
+        delete user.Password
+        req.user = user
 
         next()
     } catch (err) {

@@ -24,12 +24,13 @@ const prisma = new PrismaClient()
 //     {url : 'url19'},
 //     {url : 'url20'},
 // ]
-const hashedPassword = bcrypt.hash("1234",5)
+
+const hashedPassword = bcrypt.hashSync("1234",5)
 const userData = [
     {
-        email:"rayko@gmail.com",
-        password:hashedPassword,
-        displayname:"MrRAYTH",
+        Email:"rayko@gmail.com",
+        Password:hashedPassword,
+        Displayname:"MrRAYTH",
     }
 ]
 
@@ -63,7 +64,7 @@ const run = async () => {
     await prisma.product.createMany({
         data: productData
     })
-    await prisma.customer.createMany({
+    await prisma.user.createMany({
         data: userData
     })
 }

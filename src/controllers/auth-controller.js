@@ -82,3 +82,61 @@ exports.login = async (req,res,next) => {
 exports.getMe = (req,res,next) => {
     res.json(req.user)
 }
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+exports.updateUser = async (req,res,next) =>{
+    const { oldPassword, newPassword ,confirmNewPassword, displayname, phone, profilepicture } = req.body
+    const uid = req.user.id
+    try {
+        if( newPassword && newPassword !== confirmNewPassword ){
+            throw new Error(`New password not match`)
+        }
+        if( newPassword && !oldPassword ){
+            throw new Error(`Please input oldpassword`)
+        }
+
+        const data = await prisma.user.findFirst({
+            where : {
+                id : uid
+            }
+        })
+        delete data.Backend
+
+        let userData = {
+            Password: data.Password,
+            Displayname: data.Displayname,
+            Phone: data.Phone,
+            ProfilePicture: data.ProfilePicture
+        }
+
+        if(newPassword){
+            const pkCheck = await bcrypt.compare(oldPassword,data.Password)
+            if(!pkCheck){
+                throw new Error(`Invaild Password`)
+            }
+            const newpasshashed = await bcrypt.hash(newPassword,8)
+            userData.Password = newpasshashed
+        }
+        if(displayname){
+            userData.Displayname = displayname
+        }
+        if(phone){
+            userData.Phone = phone
+        }
+        if(profilepicture){
+            userData.ProfilePicture = profilepicture
+        }
+        // console.log(userData)
+
+        await prisma.user.update({
+            where : {
+                id : uid
+            },
+            data : userData
+        })
+        res.json({message : `Successfully Update ${data.Email}`})
+    } catch (err) {
+        next(err)
+    }
+}

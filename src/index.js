@@ -9,6 +9,7 @@ const notFoundHandler = require("./middlewares/notFound");
 const authRoute = require("./routes/auth-route")
 const productRoute = require("./routes/product-route")
 const topupRoute = require("./routes/topup-route")
+const adminRoute = require("./routes/admin-route")
 
 app.use(cors())
 app.use(express.json());
@@ -19,6 +20,7 @@ app.use(express.json());
 app.use("/auth",authRoute)
 app.use("/product",productRoute)
 app.use("/topup",topupRoute)
+app.use("/backend",adminRoute)
 
 
 app.use(errorHandler);

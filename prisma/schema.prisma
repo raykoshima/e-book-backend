@@ -34,10 +34,10 @@ model User {
 }
 
 model Topup {
-  id         Int         @id @default(autoincrement())
-  Amount     Int         @default(0)
-  Status     TopupStatus @default(PENDING)
-  user   User    @relation(fields: [UserID], references: [id], onUpdate: Cascade)
+  id     Int         @id @default(autoincrement())
+  Amount Int         @default(0)
+  Status TopupStatus @default(PENDING)
+  user   User        @relation(fields: [UserID], references: [id], onUpdate: Cascade)
   UserID Int
 }
 
@@ -45,11 +45,11 @@ model Product {
   id          Int       @id @default(autoincrement())
   Name        String
   Description String?
-  PublishDate DateTime
+  PublishDate DateTime @db.Date()
   Author      String
   Price       Int       @default(1)
   Tag         String?
-  Image       String
+  ImageUrl    String    @map("Image_URL")
   DownloadUrl String    @map("Download_URL")
   Cart        Cart[]
   History     History[]
@@ -59,33 +59,33 @@ model Product {
 }
 
 model History {
-  id         Int      @id @default(autoincrement())
+  id         Int     @id @default(autoincrement())
   PaidAmount Int
-  user   User @relation(fields: [UserID], references: [id], onUpdate: Cascade)
-  UserID Int
-  product    Product  @relation(fields: [ProductID], references: [id])
+  user       User    @relation(fields: [UserID], references: [id], onUpdate: Cascade)
+  UserID     Int
+  product    Product @relation(fields: [ProductID], references: [id])
   ProductID  Int
 }
 
 model Cart {
-  id         Int      @id @default(autoincrement())
-  user   User @relation(fields: [UserID], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  UserID Int
-  product    Product  @relation(fields: [ProductID], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  ProductID  Int
-  Order      Order?
+  id        Int     @id @default(autoincrement())
+  user      User    @relation(fields: [UserID], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  UserID    Int
+  product   Product @relation(fields: [ProductID], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  ProductID Int
+  Order     Order?
 }
 
 model Order {
-  id         Int      @id @default(autoincrement())
-  CreateAt   DateTime @default(now()) @map("Create_at")
-  UpdateAt   DateTime @updatedAt()
-  cart       Cart     @relation(fields: [CartID], references: [id])
-  CartID     Int      @unique
-  product    Product  @relation(fields: [ProductID], references: [id])
-  ProductID  Int
-  user   User @relation(fields: [UserID], references: [id], onUpdate: Cascade)
-  UserID Int
+  id        Int      @id @default(autoincrement())
+  CreateAt  DateTime @default(now()) @map("Create_at")
+  UpdateAt  DateTime @updatedAt()
+  cart      Cart     @relation(fields: [CartID], references: [id])
+  CartID    Int      @unique
+  product   Product  @relation(fields: [ProductID], references: [id])
+  ProductID Int
+  user      User     @relation(fields: [UserID], references: [id], onUpdate: Cascade)
+  UserID    Int
 }
 
 // enum PERMISSION {

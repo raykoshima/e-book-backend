@@ -12,10 +12,10 @@ ADMIN_NUMBER=<for admin role please not input 0>
 ```
 method                 path                         authen       params         query             body
 
-GET                    /product                     true         none           none              none
-GET                    /product/page/                            :page          none              none
-GET                    /id/                                      :id            none              none
-GET                    /search                                   none           ?query            none
+GET                    /product/getall              admin        none           none              none
+GET                    /product/page/:page                       :page          none              none
+GET                    /product/id/                              :id            none              none
+GET                    /product                                  none           ?q                none
 
 POST                   /auth/register                            none           none              {email, password, confirmPassword, displayname, phone?, profilepicture?}
 POST                   /auth/login                               none           none              {email, password}

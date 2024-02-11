@@ -61,20 +61,41 @@ exports.getProductByID = async (req,res,next) => {
 exports.searchProduct = async (req,res,next) => {
     // res.json({ query })
     try {
-        const { query } = req.query
-        const querytirm = query.trim()
+        const { q } = req.query
+        const querytirm = q.trim()
         if(querytirm.length === 0){
             return res.status(405).json({message:"please fill input"})
         }
 
+        // const productData = await prisma.product.findMany({
+        //     where:{
+        //         Name:{
+        //             search:`+${querytirm}`
+        //         },
+        //         Description:{
+        //             search:`+${querytirm}`
+        //         }
+        //     }
+        // })
         const productData = await prisma.product.findMany({
-            where:{
-                Name:{
-                    search:`+${querytirm}`
-                },
-                Description:{
-                    search:`+${querytirm}`
-                }
+            where : {
+                OR : [
+                    {
+                        Name: {
+                            contains : querytirm
+                        }
+                    },
+                    {
+                        Description: {
+                            contains : querytirm
+                        }
+                    },
+                    {
+                        Author: {
+                            contains : querytirm
+                        }
+                    }
+                ]
             }
         })
         if (productData.length === 0) {

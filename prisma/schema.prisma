@@ -47,7 +47,7 @@ model Product {
   Description String?
   PublishDate DateTime @db.Date()
   Author      String
-  Price       Int       @default(1)
+  Price       Int       @default(0)
   Tag         String?
   ImageUrl    String    @map("Image_URL")
   DownloadUrl String    @map("Download_URL")

@@ -7,13 +7,17 @@ exports.changeTopUpStatus = async (req, res, next) => {
     let wallet = 0
     try {
         if (status !== "PAID" && status !== "CANCEL") {
-            throw new Error(`Please use right status`)
+            // throw new Error(`Please use right status`)
+            return res.status(400).json({message : `Please use right status`})
         }
         const rs = await prisma.topup.findFirstOrThrow({
             where: {
                 id: Number(id)
             }
-        }).catch(() => { throw new Error(`topup not found`) })
+        }).catch(() => { 
+            // throw new Error(`topup not found`)
+            return res.status(404).json({message : `topup not found`})  
+        })
         const oldwallet = await prisma.user.findFirst({
             where: {
                 id: rs.UserID
@@ -173,3 +177,47 @@ exports.updateProduct = async (req, res, next) => {
 //     next(err)
 // }
 // }
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+exports.createNewProduct = async (req,res,next) => {
+    const { name, description, publishDate, author, price, tag, imageUrl, downloadUrl } = req.body
+    try {
+        if(!(name && publishDate && author && price && tag && imageUrl && downloadUrl)){
+            return res.status(406).json({message : "Please fill all requirement"})
+        }
+        const productData = {
+            Name:name,
+            PublishDate:new Date(publishDate),
+            Author:author,
+            Price:Number(price),
+            Tag:tag,
+            ImageUrl:imageUrl,
+            DownloadUrl:downloadUrl
+        }
+        if(description){
+            productData.Description = description
+        }
+        const rs = await prisma.product.create({
+            data : productData
+        })
+        
+        res.status(201).json({message : `Successfully Created ${name}` , rs})
+
+    } catch (err) {
+        next(err)
+    }
+}
+
+// Example
+// {
+//     "name" : "example request Data",
+//     "publishDate" : "04-02-2024 00:03:44",
+//     "author" : "sun9z",
+//     "price" : "9550",
+//     "tag" : "tfoc tf2 ff2",
+//     "imageUrl" : "not have",
+//     "downloadUrl" : "same here"
+// }
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------

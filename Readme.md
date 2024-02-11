@@ -22,12 +22,12 @@ POST                   /auth/login                               none           
 GET                    /auth/me                     true         none           none              none
 PATCH                  /auth/update                 true         none           none              {oldPassword, newPassword ,confirmNewPassword, displayname, phone, profilepicture}
 
-GET                    /todos                       true         none           none              none
-
 POST                   /topup                       true         none           none              {amount}
 GET                    /topup/status                true         :id            none              none
 
 PATCH                  /backend/topup/update/:id    admin        :id            none              {status : "PAID","CANCEL"}
+PATCH                  /backend/product/update/:id  admin        :id            none              { name, description, publishDate, author, price, tag, imageUrl, downloadUrl }
+POST                   /backend/product/new         admin        none           none              { name, description?, publishDate, author, price, tag, imageUrl, downloadUrl }
 ```
 **
 when use prisma in backend the first Char in datarow is uppercase

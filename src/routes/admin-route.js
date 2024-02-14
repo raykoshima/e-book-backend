@@ -10,5 +10,6 @@ router.get("/",AdminAuthenticate,(req,res,next)=>{
 router.patch("/topup/update/:id",AdminAuthenticate,adminControl.changeTopUpStatus)
 router.patch("/product/update/:id",AdminAuthenticate,adminControl.updateProduct)
 router.post("/product/new",AdminAuthenticate,adminControl.createNewProduct)
+router.delete("/product/delete/:id",AdminAuthenticate,adminControl.deleteProduct)
 
 module.exports = router;

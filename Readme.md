@@ -28,6 +28,7 @@ GET                    /topup/status                true         :id            
 PATCH                  /backend/topup/update/:id    admin        :id            none              {status : "PAID","CANCEL"}
 PATCH                  /backend/product/update/:id  admin        :id            none              { name, description, publishDate, author, price, tag, imageUrl, downloadUrl }
 POST                   /backend/product/new         admin        none           none              { name, description?, publishDate, author, price, tag, imageUrl, downloadUrl }
+DELETE                 /backend/product/delete/:id  admin        :id            none              none
 ```
 **
 when use prisma in backend the first Char in datarow is uppercase

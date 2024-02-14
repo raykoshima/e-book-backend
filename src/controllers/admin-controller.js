@@ -221,3 +221,28 @@ exports.createNewProduct = async (req,res,next) => {
 // }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+exports.deleteProduct = async(req,res,next) =>{
+    const { id } = req.params
+    try {
+        if(isNaN(id)){
+            return res.status(400).json({message : "please input id"})
+        }
+        const data = await prisma.product.findFirst({
+            where : {
+                id : Number(id)
+            }
+        })
+        if(!data){
+            return res.status(404).json({message : `Can't find product with id ${id}`})
+        }
+        await prisma.product.delete({
+            where:{
+                id : Number(id)
+            }
+        })
+        res.json({message : `Successfully delete product id ${id}`})
+    } catch (err) {
+        next(err)
+    }
+}

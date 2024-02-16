@@ -20,7 +20,7 @@ exports.changeTopUpStatus = async (req, res, next) => {
         })
         const oldwallet = await prisma.user.findFirst({
             where: {
-                id: rs.UserID
+                id: Number(rs.UserID)
             }
         })
         // console.log(`old wallet amount of ${oldwallet.Email} is ${oldwallet.Wallet}`)
@@ -48,7 +48,7 @@ exports.changeTopUpStatus = async (req, res, next) => {
         }
         await prisma.user.update({
             where: {
-                id: rs.UserID
+                id: Number(rs.UserID)
             },
             data: {
                 Wallet: wallet
@@ -70,7 +70,7 @@ exports.updateProduct = async (req, res, next) => {
     try {
         let data = await prisma.product.findFirst({
             where: {
-                id: id
+                id: Number(id)
             }
         });
 
@@ -108,7 +108,7 @@ exports.updateProduct = async (req, res, next) => {
         if (Object.keys(productData).length > 0) {
             await prisma.product.update({
                 where: {
-                    id: id
+                    id: Number(id)
                 },
                 data: productData
             });

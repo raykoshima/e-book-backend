@@ -15,7 +15,7 @@ method                 path                         authen       params         
 GET                    /product/getall              admin        none           none              none
 GET                    /product/page/:page                       :page          none              none
 GET                    /product/id/                              :id            none              none
-GET                    /product                                  none           ?q                none
+GET                    /product?q=                               none           ?q                none
 
 POST                   /auth/register                            none           none              {email, password, confirmPassword, displayname, phone?, profilepicture?}
 POST                   /auth/login                               none           none              {email, password}
@@ -29,6 +29,10 @@ PATCH                  /backend/topup/update/:id    admin        :id            
 PATCH                  /backend/product/update/:id  admin        :id            none              { name, description, publishDate, author, price, tag, imageUrl, downloadUrl }
 POST                   /backend/product/new         admin        none           none              { name, description?, publishDate, author, price, tag, imageUrl, downloadUrl }
 DELETE                 /backend/product/delete/:id  admin        :id            none              none
+
+GET                    /cart/my                     true         none           none              none
+POST                   /cart/add/:id                true         :id            none              none
+DELETE                 /cart/delete/:id             true         :id            none              none
 ```
 **
 when use prisma in backend the first Char in datarow is uppercase

@@ -25,7 +25,7 @@ exports.register = async (req,res,next) => {
 
     // console.log(emailCheck)
 
-    const hashedPassword = await bcrypt.hash(password,8)
+    const hashedPassword = await bcrypt.hash(password,5)
 
     const data = {
         Email:email,

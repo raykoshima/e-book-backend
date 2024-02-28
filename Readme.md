@@ -14,7 +14,7 @@ method                 path                         authen       params         
 
 GET                    /product/getall              admin        none           none              none
 GET                    /product/page/:page                       :page          none              none
-GET                    /product/id/                              :id            none              none
+GET                    /product/id/:id                           :id            none              none
 GET                    /product?q=                               none           ?q                none
 
 POST                   /auth/register                            none           none              {email, password, confirmPassword, displayname, phone?, profilepicture?}

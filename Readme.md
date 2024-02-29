@@ -24,6 +24,7 @@ PATCH                  /auth/update                 true         none           
 
 POST                   /topup                       true         none           none              {amount}
 GET                    /topup/status                true         :id            none              none
+GET                    /topup/me                    true         none           none              none
 
 PATCH                  /backend/topup/update/:id    admin        :id            none              {status : "PAID","CANCEL"}
 PATCH                  /backend/product/update/:id  admin        :id            none              { name, description, publishDate, author, price, tag, imageUrl, downloadUrl }

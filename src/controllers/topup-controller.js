@@ -8,7 +8,7 @@ exports.createTopupID = async (req,res,next) => {
             throw new Error(`Please Fill Input`)
         }
         const topupData = {
-            "Amount" : amount,
+            "Amount" : Number(amount),
             "UserID" : req.user.id
         }
         const rs = await prisma.topup.create({
@@ -42,3 +42,20 @@ exports.getTopupStatus = async (req,res,next) => {
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+exports.getUserTopup = async (req,res,next) => {
+    try {
+        const rs = await prisma.topup.findMany({
+            where: {
+                UserID : Number(req.user.id)
+            },
+            orderBy: {
+                id : "desc"
+            }
+        })
+        res.json(rs)
+        
+    } catch (err) {
+        next(err)
+    }
+}

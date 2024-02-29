@@ -45,7 +45,12 @@ exports.getProductByID = async (req,res,next) => {
     try{
         const { id } = req.params
         
-        const productData = await prisma.$queryRaw`SELECT * FROM product WHERE id = ${id}`
+        // const productData = await prisma.$queryRaw`SELECT * FROM product WHERE id = ${id}`
+        const productData = await prisma.product.findFirst({
+            where : {
+                id : Number(id)
+            }
+        })
         if (productData.length === 0) {
             return res.status(404).json({ message: "item that your request is not exited" });
         }

@@ -56,11 +56,14 @@ exports.login = async (req,res,next) => {
         if( !(email.trim() && password.trim())){
             throw new Error("Please Fill Input")
         }
-        const user = await prisma.user.findFirstOrThrow({
+        const user = await prisma.user.findFirst({
             where:{
                 Email:email
             }
         })
+        if(!user){
+            return res.status(404).json({error : "no user found"})
+        }
         const pwOk = await bcrypt.compare(password,user.Password)
         if(!pwOk) {
             throw new Error('invalid password')

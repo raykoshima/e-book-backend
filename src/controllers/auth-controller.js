@@ -68,7 +68,7 @@ exports.login = async (req,res,next) => {
         if(!pwOk) {
             throw new Error('invalid password')
         }
-        const payload = { id: user.id }
+        const payload = { id: user.id , backend: user.Backend }
         const token = jwt.sign(payload, process.env.JWT_SECRET_KEY,{
             expiresIn: '1d'
         })

@@ -3,7 +3,7 @@
 PORT=<br>
 JWT_SECRET_KEY=<br>
 DATABASE_URL="mysql://<username>:<password>@<IP>:3306/ebook_backend"<br>
-ADMIN_NUMBER=<for admin role please not input 0>
+ADMIN_NUMBER=<for admin role please not input 0 default was 418>
 
 ----------------------
 

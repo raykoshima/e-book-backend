@@ -64,7 +64,7 @@ exports.changeTopUpStatus = async (req, res, next) => {
 
 //chatGPT optimizations
 exports.updateProduct = async (req, res, next) => {
-    const { name, description, publishDate, author, price, tag, imageUrl, downloadUrl } = req.body;
+    const { Name, Description, PublishDate, Author, Price, Tag, ImageUrl, DownloadUrl } = req.body;
     const { id } = req.params;
 
     try {
@@ -80,29 +80,29 @@ exports.updateProduct = async (req, res, next) => {
 
         let productData = {};
 
-        if (name !== undefined && name !== data.Name) {
-            productData.Name = name;
+        if (Name !== undefined && Name !== data.Name) {
+            productData.Name = Name;
         }
-        if (description !== undefined && description !== data.Description) {
-            productData.Description = description;
+        if (Description !== undefined && Description !== data.Description) {
+            productData.Description = Description;
         }
-        if (publishDate !== undefined && publishDate !== data.PublishDate) {
-            productData.PublishDate = publishDate;
+        if (PublishDate !== undefined && PublishDate !== data.PublishDate) {
+            productData.PublishDate = PublishDate;
         }
-        if (author !== undefined && author !== data.Author) {
-            productData.Author = author;
+        if (Author !== undefined && Author !== data.Author) {
+            productData.Author = Author;
         }
-        if (price !== undefined && price !== data.Price) {
-            productData.Price = price;
+        if (Price !== undefined && Price !== data.Price) {
+            productData.Price = Number(Price);
         }
-        if (tag !== undefined && tag !== data.Tag) {
-            productData.Tag = tag;
+        if (Tag !== undefined && Tag !== data.Tag) {
+            productData.Tag = Tag;
         }
-        if (imageUrl !== undefined && imageUrl !== data.ImageUrl) {
-            productData.ImageUrl = imageUrl;
+        if (ImageUrl !== undefined && ImageUrl !== data.ImageUrl) {
+            productData.ImageUrl = ImageUrl;
         }
-        if (downloadUrl !== undefined && downloadUrl !== data.DownloadUrl) {
-            productData.DownloadUrl = downloadUrl;
+        if (DownloadUrl !== undefined && DownloadUrl !== data.DownloadUrl) {
+            productData.DownloadUrl = DownloadUrl;
         }
 
         if (Object.keys(productData).length > 0) {

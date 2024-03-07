@@ -7,7 +7,7 @@ exports.getallProduct = async (req,res,next) => {
         //         Name:'Product 1'
         //     }
         // })
-        const ProductData = await prisma.$queryRaw`SELECT * FROM product`
+        const ProductData = await prisma.product.findMany({})
         res.json({ ProductData })
     }
     catch(err){
@@ -82,7 +82,7 @@ exports.searchProduct = async (req,res,next) => {
         //         }
         //     }
         // })
-        const productData = await prisma.product.findMany({
+        const ProductData = await prisma.product.findMany({
             where : {
                 OR : [
                     {
@@ -103,11 +103,11 @@ exports.searchProduct = async (req,res,next) => {
                 ]
             }
         })
-        if (productData.length === 0) {
+        if (ProductData.length === 0) {
             return res.status(404).json({ message: "No match item" });
         }
         
-    res.json({ productData })
+    res.json({ ProductData })
         
     } catch (err) {
         next(err)
